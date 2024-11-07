@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/addon/display/placeholder.min.js"
+        integrity="sha512-acBo6sW2h2GZQ9BqU9v5RyYGPUEr1a9jrukJg825Y0ahxAg/7aqTNPtcalloqnf4DfsRVdcdNmcBNWPD8b8W8Q==" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
     <!-- 引入Pako库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
     <style>
@@ -38,9 +41,13 @@
         }
 
         .input-output-container>div {
-            width: 45%;
+            flex: 1;
             height: calc(100%-2em);
             padding: 2em;
+        }
+
+        .input-output-container>div:nth-last-child(1) {
+            max-width: 50%;
         }
 
         .input-output-container textarea {
@@ -53,7 +60,24 @@
         }
 
         button {
-            margin: 3em 0;
+            /* margin: 25% 0; */
+            align-self: center;
+        }
+
+        .CodeMirror {
+            border: 1px solid silver;
+        }
+
+        .CodeMirror-empty {
+            /* outline: 1px solid #c22; */
+        }
+
+        .CodeMirror-empty.CodeMirror-focused {
+            outline: none;
+        }
+
+        .CodeMirror pre.CodeMirror-placeholder {
+            color: #999;
         }
     </style>
 </head>
@@ -76,9 +100,10 @@
         // 初始化CodeMirror
         var editor = CodeMirror(document.getElementById('result'), {
             value: '',
+            placeholder: '//请在左侧输入原始内容',
             mode: 'javascript',
             lineNumbers: true,
-            readOnly: true
+            readOnly: false
         });
 
         function base64ToArrayBuffer(base64) {
